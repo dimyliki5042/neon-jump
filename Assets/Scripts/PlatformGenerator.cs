@@ -7,12 +7,13 @@ public class PlatformGenerator : MonoBehaviour
     [SerializeField] private GameObject _chunkPrefab;
 
     private const int CHUNK_COUNT = 3;
+    [SerializeField] private int _platformCount = 10;
     private Transform[] _chunkQueue;
 
     #region ПОДПИСКА НА СОБЫТИЯ
-    private void OnEnable() => ChunkChecker.OnOffChunk += Regenerate;
+    private void OnEnable() => GlobalActions.OnOffChunk += Regenerate;
 
-    private void OnDisable() => ChunkChecker.OnOffChunk -= Regenerate;
+    private void OnDisable() => GlobalActions.OnOffChunk -= Regenerate;
     #endregion
 
     private void Awake() => _chunkQueue = new Transform[CHUNK_COUNT];
@@ -27,11 +28,11 @@ public class PlatformGenerator : MonoBehaviour
             chunk.transform.position = new Vector2(0, 10 * i); // Постановка чанков друг над другом
             chunk.name = i.ToString(); // Наименование чанка
             _chunkQueue[i] = chunk.transform; // Добавление чанка в очередь
-            for (int j = -5; j < 5; j++)
+            for (int j = 0; j < _platformCount; j++)
             {
                 float x = Random.Range(-2.15f, 2.15f);
                 float y = Random.Range(j, j + 1);
-                Vector2 platformPos = new Vector2(x, y);
+                Vector2 platformPos = new Vector2(x, y - 5);
                 GameObject platform = Instantiate(_platformPrefab, chunk.transform, false);
                 platform.transform.localPosition = platformPos;
             }
@@ -45,11 +46,11 @@ public class PlatformGenerator : MonoBehaviour
         chunk.position = new Vector3(0, yPosition + 10, 0); // Задаем новому чанку позицию выше последнего чанка
         ClearChunk(chunk); // Очищаем все дочерние объекты чанка
 
-        for (int j = -5; j < 5; j++)
+        for (int j = 0; j < _platformCount; j++)
         {
             float x = Random.Range(-2.15f, 2.15f);
             float y = Random.Range(j, j + 1);
-            Vector2 platformPos = new Vector2(x, y);
+            Vector2 platformPos = new Vector2(x, y - 5);
             GameObject platform = Instantiate(_platformPrefab, chunk, false);
             platform.transform.localPosition = platformPos;
         }
