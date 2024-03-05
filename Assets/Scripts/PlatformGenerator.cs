@@ -7,71 +7,55 @@ public class PlatformGenerator : MonoBehaviour
     [SerializeField] private GameObject _chunkPrefab;
 
     private const int CHUNK_COUNT = 3;
+    private float _minX;  // Левая граница камеры
+    private float _minY;  // Нижняя граница камеры
+    private int _upperChunkPos; // У-позиция верхнего чанка
     [SerializeField] private int _platformCount = 10;
-    private Transform[] _chunkQueue;
+    private Dictionary<int, List<GameObject>> _chunkMap = new Dictionary<int, List<GameObject>>();
 
     #region ПОДПИСКА НА СОБЫТИЯ
-    private void OnEnable() => GlobalActions.OnOffChunk += Regenerate;
+    private void OnEnable() => GlobalActions.OnOffChunk += ResortPlatforms;
 
-    private void OnDisable() => GlobalActions.OnOffChunk -= Regenerate;
+    private void OnDisable() => GlobalActions.OnOffChunk -= ResortPlatforms;
     #endregion
 
-    private void Awake() => _chunkQueue = new Transform[CHUNK_COUNT];
+    private void Start()
+    {
+        _minX = CameraController.XBorder + 0.35f; // Левая граница камеры + половина платформы (чтоб не уходила за край экрана)
+        _minY = CameraController.YBorder;
+        GeneratePlatformsAndChunks();
+        _upperChunkPos = 20;
+    }
 
-    private void Start() => FirstGenerate();
-
-    private void FirstGenerate()
+    private void GeneratePlatformsAndChunks()
     {
         for(int i = 0; i < CHUNK_COUNT; i++)
         {
             GameObject chunk = Instantiate(_chunkPrefab, transform, false); // Создание чанка
             chunk.transform.position = new Vector2(0, 10 * i); // Постановка чанков друг над другом
             chunk.name = i.ToString(); // Наименование чанка
-            _chunkQueue[i] = chunk.transform; // Добавление чанка в очередь
-            for (int j = 0; j < _platformCount; j++)
+            _chunkMap.Add(i, new List<GameObject>());
+            float modify = 10 / _platformCount;
+            for (float y = _minY; y < Mathf.Abs(_minY); y += modify)
             {
-                float x = Random.Range(-2.15f, 2.15f);
-                float y = Random.Range(j, j + 1);
-                Vector2 platformPos = new Vector2(x, y - 5);
+                float x = Random.Range(_minX, Mathf.Abs(_minX));
+                Vector2 platformPos = new Vector2(x, y);
                 GameObject platform = Instantiate(_platformPrefab, chunk.transform, false);
                 platform.transform.localPosition = platformPos;
+                _chunkMap[i].Add(platform);
             }
         }
     }
 
-    private void Regenerate(int chunkIndex)
+    private void ResortPlatforms(Transform chunk, int chunkIndex)
     {
-        Transform chunk = _chunkQueue[0]; // Получаем первый в очереди чанк (по логике игры его и покинул игрок)
-        float yPosition = _chunkQueue[_chunkQueue.Length - 1].position.y; // Получаем у-координату самого верхнего чанка
-        chunk.position = new Vector3(0, yPosition + 10, 0); // Задаем новому чанку позицию выше последнего чанка
-        ClearChunk(chunk); // Очищаем все дочерние объекты чанка
-
-        for (int j = 0; j < _platformCount; j++)
+        _upperChunkPos += 10;
+        chunk.position = new Vector3(0, _upperChunkPos, 0); // Задаем новому чанку позицию выше последнего чанка
+        
+        foreach(GameObject platform in _chunkMap[chunkIndex])
         {
-            float x = Random.Range(-2.15f, 2.15f);
-            float y = Random.Range(j, j + 1);
-            Vector2 platformPos = new Vector2(x, y - 5);
-            GameObject platform = Instantiate(_platformPrefab, chunk, false);
-            platform.transform.localPosition = platformPos;
+            float x = Random.Range(_minX, Mathf.Abs(_minX));
+            platform.transform.position = new Vector2(x, platform.transform.position.y);
         }
-
-        ResortArray(); // Сортировка очереди чанков
-    }
-
-    private void ClearChunk(Transform chunk)
-    {
-        if (chunk.childCount != 0) // Если в чанке есть платформы
-        {
-            for (int i = chunk.childCount - 1; i != 0; i--)
-                Destroy(chunk.GetChild(i).gameObject);
-        }
-    }
-
-    private void ResortArray()
-    {
-        Queue<Transform> queue = new Queue<Transform>(_chunkQueue);
-        Transform a = queue.Dequeue(); // Вытаскиваем первый элемент в очереди (первый чанк)
-        queue.Enqueue(a); // Заносим его в конец очереди
-        _chunkQueue = queue.ToArray(); // Присваиваем очередь массиву
     }
 }

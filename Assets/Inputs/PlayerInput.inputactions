@@ -8,50 +8,48 @@
                 {
                     "name": "Move",
                     "type": "Value",
-                    "id": "e7efebad-5a2d-4efd-b5d1-8a1c8d71f296",
+                    "id": "0a2d1bf3-657e-44fd-abf8-47826c80f9aa",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "UI",
+                    "type": "Button",
+                    "id": "e0ecb999-0f80-4ccf-ab46-5911a2e32a53",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
-                    "name": "Arrows",
-                    "id": "a211288f-3ac6-49aa-9245-b4d8cc571951",
-                    "path": "2DVector",
+                    "name": "",
+                    "id": "e1bcc647-7643-499f-a7ef-010f9a5a01eb",
+                    "path": "<Sensor>/{Back}",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
+                    "groups": "Android",
+                    "action": "UI",
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "left",
-                    "id": "852520b5-a46d-4c71-8786-b82aad9b09e3",
-                    "path": "<Keyboard>/leftArrow",
+                    "name": "",
+                    "id": "30250770-12a1-42ae-876d-01824c564c82",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Move",
+                    "groups": "Test",
+                    "action": "UI",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "b76b04ad-8b44-43fc-bde6-50db3ec44739",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "WASD",
-                    "id": "e771e5f3-08b5-4d78-a40d-c59f98c92a37",
+                    "id": "5ebf8ca7-6234-4d62-86d2-3c2ed18e89ff",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -62,22 +60,55 @@
                 },
                 {
                     "name": "left",
-                    "id": "ee5639c7-fe4a-4db9-8e12-e966c927f930",
+                    "id": "d2033d5a-24f8-4965-83b6-cee145b421cc",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "Test",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "right",
-                    "id": "32c2b55e-fc1f-4225-b2c5-bd0c3543fafb",
+                    "id": "5ad23361-00a3-4d3d-a590-94802ff8f147",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "Test",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Arrows",
+                    "id": "5e0e2f10-d3a8-4874-8f6c-49ab610b4a05",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "left",
+                    "id": "e0fa9f2e-6e86-403f-9c52-45962c0dbb1d",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Test",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "2428cb74-3ef9-4598-bb90-7c96e1f190c7",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Test",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -87,8 +118,19 @@
     ],
     "controlSchemes": [
         {
-            "name": "Keyboard",
-            "bindingGroup": "Keyboard",
+            "name": "Android",
+            "bindingGroup": "Android",
+            "devices": [
+                {
+                    "devicePath": "<Sensor>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "Test",
+            "bindingGroup": "Test",
             "devices": [
                 {
                     "devicePath": "<Keyboard>",

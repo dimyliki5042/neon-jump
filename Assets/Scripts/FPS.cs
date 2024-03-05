@@ -2,11 +2,8 @@ using UnityEngine;
 
 public class FPS : MonoBehaviour
 {
-    [SerializeField] private int _frameRate;
-
-    [ContextMenu("Set FPS")]
-    private void SetFPS()
+    private void Awake()
     {
-        Application.targetFrameRate = _frameRate;
+        Application.targetFrameRate = (int)Screen.currentResolution.refreshRateRatio.value;
     }
 }
