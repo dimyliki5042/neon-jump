@@ -13,40 +13,9 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "UI",
-                    "type": "Button",
-                    "id": "e0ecb999-0f80-4ccf-ab46-5911a2e32a53",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "e1bcc647-7643-499f-a7ef-010f9a5a01eb",
-                    "path": "<Sensor>/{Back}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Android",
-                    "action": "UI",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "30250770-12a1-42ae-876d-01824c564c82",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Test",
-                    "action": "UI",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "WASD",
                     "id": "5ebf8ca7-6234-4d62-86d2-3c2ed18e89ff",
@@ -120,13 +89,7 @@
         {
             "name": "Android",
             "bindingGroup": "Android",
-            "devices": [
-                {
-                    "devicePath": "<Sensor>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
+            "devices": []
         },
         {
             "name": "Test",

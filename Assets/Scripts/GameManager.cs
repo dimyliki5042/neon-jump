@@ -2,24 +2,26 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    //public static GameManager Instance { get; private set; }
-    [SerializeField] public static Difficulty GameDifficulty {  get; private set; }
+    public static GameManager Instance { get; private set; }
 
-    private void OnEnable() => GlobalActions.OnChangeDiff += ChangeDifficulty;
-
-    private void OnDisable() => GlobalActions.OnChangeDiff -= ChangeDifficulty;
+    [field:SerializeField]
+    public int Level { get; private set; } // Уровень сложности
+    public int LevelStep { get; private set; } // Удвоенное число для вычисления уровня
 
     private void Awake()
     {
-        GameDifficulty = Difficulty.Easy;
+        Instance = this;
+        LevelStep = 150;
+        Debug.Log(Application.platform);
     }
 
-    public void ChangeDifficulty() => GameDifficulty++;
-}
-
-public enum Difficulty
-{
-    Easy = 1,
-    Normal,
-    Hard
+    public void SetLevel(int newLevel)
+    {
+        if (newLevel != Level)
+        {
+            LevelStep += LevelStep;
+            Level = newLevel;
+            UIController.Instance.ChangeTextColor();
+        }
+    }
 }

@@ -16,8 +16,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // ¬ычисление уровн€ сложности -> (очки игрока дел€тс€ без остатка на шаг и прибавл€етс€ текущий уровень игрока)
+        int level = (_score / GameManager.Instance.LevelStep) + GameManager.Instance.Level;
+        GameManager.Instance.SetLevel(level);
         SetScore();
-        CheckScore();
     }
 
     private void SetScore()
@@ -26,21 +28,14 @@ public class PlayerController : MonoBehaviour
         if(_score < y)
         {
             _score = y;
-            GlobalActions.UpdatePlayerScore.Invoke(_score);
+            UIController.Instance.DrawScore(_score);
         }
-    }
-
-    private void CheckScore()
-    {
-        //if (_score == 150 || _score == 300 || _score == 500)
-        //    GlobalActions.OnChangeDiff.Invoke();
     }
 
     private void PlayerDie()
     {
-        Debug.Log("Player died");
         _boxCollider.enabled = false;
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
         SceneManager.LoadScene(0); // ѕерезагрузка сцены пока что
     }
 

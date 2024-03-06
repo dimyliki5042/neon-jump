@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlatformGenerator : MonoBehaviour
 {
+    public static PlatformGenerator Instance { get; private set; }
     [SerializeField] private GameObject _platformPrefab;
     [SerializeField] private GameObject _chunkPrefab;
 
@@ -13,11 +14,7 @@ public class PlatformGenerator : MonoBehaviour
     [SerializeField] private int _platformCount = 10;
     private Dictionary<int, List<GameObject>> _chunkMap = new Dictionary<int, List<GameObject>>();
 
-    #region ПОДПИСКА НА СОБЫТИЯ
-    private void OnEnable() => GlobalActions.OnOffChunk += ResortPlatforms;
-
-    private void OnDisable() => GlobalActions.OnOffChunk -= ResortPlatforms;
-    #endregion
+    private void Awake() => Instance = this;
 
     private void Start()
     {
@@ -47,7 +44,7 @@ public class PlatformGenerator : MonoBehaviour
         }
     }
 
-    private void ResortPlatforms(Transform chunk, int chunkIndex)
+    public void ResortPlatforms(Transform chunk, int chunkIndex)
     {
         _upperChunkPos += 10;
         chunk.position = new Vector3(0, _upperChunkPos, 0); // Задаем новому чанку позицию выше последнего чанка

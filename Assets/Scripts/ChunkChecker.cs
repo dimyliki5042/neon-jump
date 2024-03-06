@@ -5,6 +5,6 @@ public class ChunkChecker : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         int chunkIndex = int.Parse(collision.name);
-        GlobalActions.OnOffChunk.Invoke(collision.transform, chunkIndex);
+        PlatformGenerator.Instance.ResortPlatforms(collision.transform, chunkIndex);
     }
 }

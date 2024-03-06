@@ -8,8 +8,9 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 _direction;
     private Rigidbody2D _rigidbody;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _jumpForce;
+    [SerializeField] private float _speed; // Скорость персонажа (15 для акселерометра)
+    [SerializeField] private float _jumpForce; // Сила прыжка персонажа
+    [SerializeField, Range(0, 1)] private float _accelerationDeadZone; // Мертвая зона для акселерометра
 
     private float _minX; // Левая граница камеры
 
@@ -19,21 +20,26 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    private void Start() => _minX = CameraController.XBorder;
+    private void OnEnable() => InputSystem.EnableDevice(Accelerometer.current.device);
+
+    private void OnDisable() => InputSystem.DisableDevice(Accelerometer.current.device);
+
+    private void Start() => _minX = CameraController.XBorder; // Получение левой границы камеры по оси-Х
 
     private void FixedUpdate()
     {
-        //if (Input.acceleration.x > 0.5f || Input.acceleration.x < 0.5f)
+        _direction = Accelerometer.current.acceleration.ReadValue();
+        if (MathF.Abs(_direction.x) > _accelerationDeadZone)
             Move();
     }
 
     // Отладочное движение
-    public void OnMove(InputAction.CallbackContext context) => _direction = context.ReadValue<Vector2>() * _speed;
+    //public void OnMove(InputAction.CallbackContext context) => 
+    //    _direction = context.ReadValue<Vector2>() * (_speed + GameManager.Instance.Level);
 
     private void Move()
     {
-        //_direction = Input.acceleration * 15f;
-        _direction *= (int)GameManager.GameDifficulty;
+        _direction *= 5f * (_speed + GameManager.Instance.Level);
         _rigidbody.velocity = new Vector2(_direction.x, _rigidbody.velocity.y);
         // Перемещение персонажа с одной стороны экрана на другую
         if(transform.position.x <= _minX || transform.position.x >= Mathf.Abs(_minX))
