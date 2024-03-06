@@ -6,4 +6,4 @@
 * Main menu, settings
 * Music
 * Background
-* Difficulty
+* Getting phone buttons through the new input system
